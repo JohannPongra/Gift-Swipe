@@ -114,6 +114,34 @@ Die Begriffe werden dann vertieft, wenn wir sie im Projekt brauchen. Zugangsdate
 - **Prüfstand:** Die drei Quelldateien wurden gelesen; ein erfolgreicher Browsertest ist noch nicht bestätigt. Alle drei Dateien waren beim Prüfen noch untracked.
 - **Geplanter Git-Schritt:** Nach dem Browsertest die drei Quelldateien und diesen Lernprotokolleintrag in VS Code prüfen und stagen. Passende Commit-Message: `Add initial gift card layout and button handlers`. Commit und Push sind noch nicht bestätigt.
 
+### 28.09.2026 – Grundgerüst getestet und gespeichert
+
+- **Bestätigt:** Ich habe den Browsertest und den Commit erfolgreich durchgeführt. Die Buttons geben die erwarteten Entscheidungen in der Konsole aus.
+- **Git-Prüfung:** Der aktuelle Commit ist `84d97c4` (`Add initial gift card layout and button handlers`). Das Arbeitsverzeichnis war vor diesem Protokolleintrag sauber.
+- **Nächster kleiner Schritt:** In `app.js` Titel, Preis und Beschreibung aus dem ersten Array-Eintrag in die vorhandene HTML-Karte übertragen. Die Umsetzung und der Test dieses nächsten Schritts stehen noch aus.
+
+### 28.09.2026 – Fehlersuche: Preis bleibt unverändert
+
+- **Beobachtung:** Obwohl im JavaScript-Array `29,99 €` gespeichert ist, zeigt die Seite weiterhin `39,99 €` aus dem HTML.
+- **Gefundene Ursache:** Die Selektoren `#titel`, `#preis` und `#beschreibung` passen nicht zum HTML. Dort gibt es die ID `geschenk-titel` und die Klassen `preis` sowie `beschreibung`.
+- **Erklärung:** `querySelector` liefert bei fehlendem Treffer `null`. Der Zugriff auf `titelElement.textContent` bricht deshalb die laufende Skriptausführung ab, bevor der Preis aktualisiert wird.
+- **Vorgeschlagene Korrektur:** Die Selektoren in `app.js` auf `#geschenk-titel`, `.preis` und `.beschreibung` ändern. `#` steht für eine ID, `.` für eine Klasse.
+- **Prüfstand:** Ursache anhand der gespeicherten Dateien festgestellt. Korrektur und erneuter Browsertest stehen noch aus; noch kein Commit für diesen Schritt.
+
+### 28.09.2026 – Sichtbares Ergebnis und tatsächliche Funktion unterscheiden
+
+- **Beobachtung:** Die Karte zeigt jetzt `29,99 €`; allerdings wurden Preis und Beschreibung auch direkt im HTML geändert.
+- **Codeprüfung:** `.preis` und `.beschreibung` passen inzwischen zum HTML. Der Titel-Selektor lautet noch `#titel`, obwohl die HTML-ID weiterhin `geschenk-titel` ist. Damit besteht die Fehlerursache beim Titel noch.
+- **Lernpunkt:** Ein erwarteter sichtbarer Text allein beweist nicht, dass JavaScript funktioniert, wenn derselbe Text bereits im HTML steht.
+- **Nächster Test:** Titel-Selektor korrigieren, ausschließlich im JavaScript einen anderen Preis setzen und nach dem Neuladen sowohl den sichtbaren Preis als auch die Klickmeldungen prüfen. Ergebnis noch offen.
+
+### 28.09.2026 – Dynamische Kartentexte erfolgreich getestet
+
+- **Bestätigtes Testergebnis:** Nach der Korrektur des Titel-Selektors wird der ausschließlich in JavaScript geänderte Preis auf der Karte angezeigt. Der Test einschließlich der Klickmeldungen wurde als erfolgreich zurückgemeldet.
+- **Codeprüfung:** `#geschenk-titel`, `.preis` und `.beschreibung` stimmen jetzt mit dem HTML überein. `zeigeGeschenkidee(0)` überträgt die Daten des ersten Array-Eintrags in die Karte.
+- **Vor dem Commit:** Testtexte in Titel und Beschreibung bereinigen, anschließend `app.js`, `index.html` und dieses Lerntagebuch in VS Code prüfen und stagen.
+- **Vorgeschlagene Commit-Message:** `Render gift card text from JavaScript data`. Der Commit ist noch nicht bestätigt.
+
 ## Vorlage für weitere Einträge
 
 ### Datum – Schritt / Thema
