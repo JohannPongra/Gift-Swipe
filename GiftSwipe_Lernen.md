@@ -91,6 +91,21 @@ Die Begriffe werden dann vertieft, wenn wir sie im Projekt brauchen. Zugangsdate
 - **Verstanden:** `git add` bereitet Änderungen für einen Commit vor; `git commit` speichert sie dauerhaft in der lokalen Git-Historie. `git init` erstellt die lokale Versionsverwaltung, veröffentlicht aber nichts online.
 - **Nächster Schritt:** Den sauberen Zustand mit `git status` prüfen und anschließend die Projektdateien für die erste Web-App-Struktur planen.
 
+### 28.09.2026 – `.gitignore` angelegt und committen gelernt
+
+- **Umsetzung:** Eine `.gitignore` mit Regeln für `.env`-Dateien sowie Betriebssystem- und Editor-Dateien wurde erstellt.
+- **Prüfung:** `git status` zeigte zunächst die neue `.gitignore` und die aktualisierte Dokumentation. Beide Dateien wurden gemeinsam gestaged.
+- **Ergebnis:** Commit `7573efe` mit der Nachricht `Add Git ignore rules and update learning log` wurde erfolgreich erstellt. Danach meldete `git status`: `nothing to commit, working tree clean`.
+- **Verstanden:** `git status` unterscheidet nicht verfolgte, geänderte und bereits für den Commit vorgemerkte Dateien. Ein sauberer Arbeitsstand bedeutet, dass keine ungesicherten Änderungen vorliegen.
+- **Nächster Schritt:** Das lokale Repository mit einem GitHub-Repository verbinden. Dafür brauchen wir zuerst einen GitHub-Account bzw. müssen prüfen, ob bereits einer vorhanden ist.
+
+### 28.09.2026 – Lokales Repository mit GitHub verbunden
+
+- **Umsetzung:** Das GitHub-Repository `JohannPongra/Gift-Swipe` wurde als Remote mit dem Namen `origin` eingetragen. `git remote -v` bestätigte die Fetch- und Push-Adresse.
+- **Ergebnis:** `git push -u origin master` übertrug die bisherigen Commits erfolgreich zu GitHub. Der lokale Branch `master` verfolgt nun `origin/master`.
+- **Verstanden:** Git kann lokal arbeiten, ohne online verbunden zu sein. `git push` überträgt lokale Commits; `-u` speichert die Standardverbindung für spätere Pushes. Die Browser-Anmeldung dient nur der Authentifizierung.
+- **Nächster Schritt:** Einen ersten kleinen Web-App-Grundaufbau mit `index.html`, `style.css` und `app.js` planen und anschließend lokal testen.
+
 ## Vorlage für weitere Einträge
 
 ### Datum – Schritt / Thema
