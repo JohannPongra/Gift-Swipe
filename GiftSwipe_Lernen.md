@@ -81,6 +81,16 @@ Die Begriffe werden dann vertieft, wenn wir sie im Projekt brauchen. Zugangsdate
 - **Git-Schritt:** Noch kein Commit bestätigt. Die Initialisierung des Git-Repositories ist der nächste geplante Schritt.
 - **Verständnisfrage vor dem nächsten Schritt:** Was bewirkt `git init` vermutlich? Meine Antwort steht noch aus.
 
+### 28.09.2026 – Erstes Git-Repository und erster Commit
+
+- **Ziel:** Den bisherigen Lernstand als nachvollziehbaren Git-Entwicklungsstand speichern.
+- **Umsetzung:** `git init` initialisierte das lokale Repository. Mit `git status` wurde die zunächst nicht verfolgte Datei erkannt. `git add GiftSwipe_Lernen.md` nahm sie in die Staging Area auf.
+- **Hinweis:** Git meldete eine LF/CRLF-Zeilenendenwarnung. Das ist unter Windows eine normale Formatierungsumwandlung und kein inhaltlicher Fehler.
+- **Fehler und Lösungsweg:** Der erste Commitversuch scheiterte, weil Git noch keine Benutzeridentität kannte. Nach dem Setzen von `user.name` und `user.email` konnte der Commit erstellt werden.
+- **Ergebnis:** Commit `5a8e9e5` mit der Nachricht `Document GiftSwipe learning plan` wurde erfolgreich erstellt. Er enthält 95 Zeilen in `GiftSwipe_Lernen.md`.
+- **Verstanden:** `git add` bereitet Änderungen für einen Commit vor; `git commit` speichert sie dauerhaft in der lokalen Git-Historie. `git init` erstellt die lokale Versionsverwaltung, veröffentlicht aber nichts online.
+- **Nächster Schritt:** Den sauberen Zustand mit `git status` prüfen und anschließend die Projektdateien für die erste Web-App-Struktur planen.
+
 ## Vorlage für weitere Einträge
 
 ### Datum – Schritt / Thema
