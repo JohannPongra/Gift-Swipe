@@ -106,6 +106,14 @@ Die Begriffe werden dann vertieft, wenn wir sie im Projekt brauchen. Zugangsdate
 - **Verstanden:** Git kann lokal arbeiten, ohne online verbunden zu sein. `git push` überträgt lokale Commits; `-u` speichert die Standardverbindung für spätere Pushes. Die Browser-Anmeldung dient nur der Authentifizierung.
 - **Nächster Schritt:** Einen ersten kleinen Web-App-Grundaufbau mit `index.html`, `style.css` und `app.js` planen und anschließend lokal testen.
 
+### 28.09.2026 – Grundgerüst gelesen und Commit in VS Code vorbereitet
+
+- **Vorhandener Code:** `index.html` enthält eine feste Geschenkekarte mit Titel, Preis, SVG-Platzhalter und Ja-/Nein-Buttons. `style.css` gestaltet die Seite für verschiedene Bildschirmgrößen. `app.js` registriert Klicks und gibt Entscheidungen in der Browser-Konsole aus.
+- **Besprochen:** HTML beschreibt den Inhalt, CSS das Aussehen und JavaScript das Verhalten. `defer` verzögert die Skriptausführung bis nach dem Einlesen des HTML. `querySelector` findet Elemente; `addEventListener` reagiert auf Klicks.
+- **Aktuelle Grenze:** Das Array `geschenkideen` wird bisher nur für die Anzahl in einer Konsolenmeldung verwendet. Karteninhalte und Fortschritt stehen fest im HTML. Entscheidungen werden noch nicht gespeichert.
+- **Prüfstand:** Die drei Quelldateien wurden gelesen; ein erfolgreicher Browsertest ist noch nicht bestätigt. Alle drei Dateien waren beim Prüfen noch untracked.
+- **Geplanter Git-Schritt:** Nach dem Browsertest die drei Quelldateien und diesen Lernprotokolleintrag in VS Code prüfen und stagen. Passende Commit-Message: `Add initial gift card layout and button handlers`. Commit und Push sind noch nicht bestätigt.
+
 ## Vorlage für weitere Einträge
 
 ### Datum – Schritt / Thema
