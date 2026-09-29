@@ -64,11 +64,35 @@ h1 {
     line-height: 1.6;
 }
 
+.statusmeldung {
+    margin: 0 0 1rem;
+    color: var(--sekundaerfarbe);
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    text-align: center;
+}
+
 .geschenkekarte {
     overflow: hidden;
     border-radius: 1rem;
     background-color: var(--kartenfarbe);
     box-shadow: var(--schatten);
+    touch-action: pan-y;
+    transition: transform 220ms ease;
+    will-change: transform;
+}
+
+.geschenkekarte.wird-gezogen {
+    cursor: grabbing;
+    transition: none;
+}
+
+.geschenkekarte.swipe-links {
+    transform: translateX(-120%) rotate(-18deg);
+}
+
+.geschenkekarte.swipe-rechts {
+    transform: translateX(120%) rotate(18deg);
 }
 
 .bildplatzhalter {
@@ -122,6 +146,11 @@ h2 {
     transition: transform 160ms ease, filter 160ms ease;
 }
 
+.entscheidungsbutton:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
 .entscheidungsbutton:hover,
 .entscheidungsbutton:focus-visible {
     filter: brightness(0.94);
@@ -149,6 +178,14 @@ h2 {
     text-align: center;
 }
 
+.abschlussmeldung {
+    margin: 2rem 0 0;
+    color: var(--sekundaerfarbe);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    text-align: center;
+}
+
 @media (min-width: 600px) {
     .seiteninhalt {
         padding: 4rem 0;
@@ -156,5 +193,11 @@ h2 {
 
     .karteninhalt {
         padding: 2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .geschenkekarte {
+        transition: none;
     }
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftSwipe-Auswertung</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auswertung.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="supabase-client.js"></script>
+    <script src="auswertung.js" defer></script>
+</head>
+<body>
+    <main class="auswertung-seite">
+        <header class="auswertung-kopf">
+            <p class="ueberzeile">GiftSwipe</p>
+            <h1>Auswertung</h1>
+            <p>Hier siehst du die gespeicherten Entscheidungen.</p>
+        </header>
+
+        <section class="loginbereich" id="loginbereich" aria-labelledby="login-titel">
+            <h2 id="login-titel">Admin-Login</h2>
+            <form id="login-form">
+                <label for="email">E-Mail-Adresse</label>
+                <input id="email" name="email" type="email" autocomplete="username" required>
+                <label for="passwort">Passwort</label>
+                <input id="passwort" name="passwort" type="password" autocomplete="current-password" required>
+                <button class="primaer-button" type="submit">Einloggen</button>
+            </form>
+        </section>
+
+        <section class="dashboard" id="dashboard" aria-labelledby="dashboard-titel" hidden>
+            <div class="dashboard-kopf">
+                <div>
+                    <p class="ueberzeile">Geschützte Übersicht</p>
+                    <h2 id="dashboard-titel">Entscheidungen</h2>
+                </div>
+                <button class="sekundaer-button" id="abmelden-button" type="button">Abmelden</button>
+            </div>
+
+            <p class="statusmeldung" id="statusmeldung" role="status" aria-live="polite"></p>
+
+            <div class="kennzahlen" aria-label="Zusammenfassung">
+                <div class="kennzahl"><span>Gesamt</span><strong id="gesamtzahl">0</strong></div>
+                <div class="kennzahl kennzahl-ja"><span>Ja</span><strong id="jazahl">0</strong></div>
+                <div class="kennzahl kennzahl-nein"><span>Nein</span><strong id="neinzahl">0</strong></div>
+            </div>
+
+            <div class="tabelle-wrapper">
+                <table>
+                    <caption>Alle gespeicherten Entscheidungen</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Geschenkidee</th>
+                            <th scope="col">Preis</th>
+                            <th scope="col">Entscheidung</th>
+                            <th scope="col">Zeitpunkt</th>
+                        </tr>
+                    </thead>
+                    <tbody id="entscheidungen-liste"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <p class="statusmeldung seitenstatus" id="seitenstatus" role="alert" aria-live="assertive"></p>
+    </main>
+</body>
+</html>

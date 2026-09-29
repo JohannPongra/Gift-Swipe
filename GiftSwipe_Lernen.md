@@ -31,15 +31,34 @@ Geplant sind HTML, CSS, Vanilla JavaScript, Supabase, Git und GitHub. Zunächst 
 | Phase                      | Inhalt                                                                                        | Status |
 | -------------------------- | --------------------------------------------------------------------------------------------- | ------ |
 | 0 – Git & Projektstart     | Git und GitHub unterscheiden; Projektordner, Repository, `.gitignore`, erster Commit und Push | In Arbeit |
-| 1 – Grundgerüst            | Responsive Geschenk-Karte mit Bild, Titel, Preis und Ja-/Nein-Buttons                         | Offen  |
-| 2 – Geschenkideen          | JavaScript-Array, Kartenwechsel und Fortschrittsanzeige                                       | Offen  |
-| 3 – Abstimmungen           | Entscheidungen zunächst im JavaScript-Zustand speichern und rückgängig machen                 | Offen  |
-| 4 – Swipe-Funktion         | Maus- und Touch-Gesten, Animation und erster sinnvoller Feature-Branch                        | Offen  |
-| 5 – Supabase               | Datenmodell, Online-Speicherung, Teilnehmer-Link und sichere Zugriffsregeln                   | Offen  |
-| 6 – Auswertung             | Entscheidungen anzeigen, filtern und mit Produktlinks sowie Zeitpunkten darstellen            | Offen  |
+| 1 – Grundgerüst             | Responsive Geschenk-Karte mit Bild, Titel, Preis und Ja-/Nein-Buttons                         | Erledigt |
+| 2 – Geschenkideen           | JavaScript-Array, Kartenwechsel und Fortschrittsanzeige                                       | Erledigt |
+| 3 – Abstimmungen            | Entscheidungen zunächst im JavaScript-Zustand speichern und rückgängig machen                 | Erledigt |
+| 4 – Swipe-Funktion          | Maus- und Touch-Gesten, Animation und erster sinnvoller Feature-Branch                        | Erledigt |
+| 5 – Supabase               | Datenmodell, Online-Speicherung, Teilnehmer-Link und sichere Zugriffsregeln                   | Erledigt |
+| 6 – Auswertung             | Entscheidungen anzeigen, filtern und mit Produktlinks sowie Zeitpunkten darstellen            | Erledigt |
 | 7 – Qualität               | Mobile-Design, Lade- und Fehlerzustände, Abschluss, Neustart und Accessibility                | Offen  |
 | 8 – GitHub-Qualität        | README, Screenshots, Setup, Architektur und „What I learned“                                  | Offen  |
 | 9 – GitHub-Fortgeschritten | Issues, Pull Requests, Branches, Merge, Tags und Releases am echten Projekt                   | Offen  |
+
+### 29.09.2026 – Geschenkideen und Entscheidungen online gespeichert
+
+- **Ziel:** Die Teilnehmerseite mit Supabase verbinden und Entscheidungen online speichern.
+- **Umsetzung:** Das Supabase-Schema, Testdaten, eine private Session und die Client-Anbindung wurden eingerichtet. `config.js` enthält die lokale Projektkonfiguration.
+- **Ergebnis und Prüfung:** Der Online-Test war erfolgreich: Zwei Geschenkideen wurden geladen, beide Entscheidungen gespeichert und die Abschlussmeldung „Danke! 2 Geschenkideen wurden bewertet.“ angezeigt.
+- **Verstanden:** Die Supabase-Projekt-URL für `createClient` ist die Basis-URL ohne `/rest/v1/`. Der `access_token` aus der Session wird für die sichere Speicherfunktion benötigt.
+- **Fehler und Lösungsweg:** Zunächst enthielt die Projekt-URL zusätzlich `/rest/v1/`, wodurch die Anfrage fehlschlug. Nach der Korrektur funktionierte der Ablauf.
+- **Git-Schritt:** Noch kein neuer Commit bestätigt. `config.js` bleibt durch `.gitignore` aus dem Repository ausgeschlossen.
+- **Offene Fragen / nächster Schritt:** Separate Auswertungsseite mit Admin-Login und Übersicht der gespeicherten Entscheidungen.
+
+### 29.09.2026 – Auswertung mit Admin-Login getestet
+
+- **Ziel:** Gespeicherte Entscheidungen auf einer separaten, geschützten Seite anzeigen.
+- **Umsetzung:** `auswertung.html`, `auswertung.js` und `auswertung.css` enthalten Login, Kennzahlen, Entscheidungstabelle und Abmeldung. Supabase Auth und RLS schützen die Abfrage.
+- **Ergebnis und Prüfung:** Die Auswertung wurde erfolgreich getestet. Die gespeicherten Entscheidungen und die Zusammenfassung werden nach dem Login angezeigt.
+- **Verstanden:** Die Teilnehmerseite und die Auswertung können denselben öffentlichen Supabase-Client verwenden; der Zugriff auf Entscheidungen wird durch die eingeloggte Supabase-Session und RLS geregelt.
+- **Git-Schritt:** Noch kein neuer Commit bestätigt. `config.js` bleibt aus dem Repository ausgeschlossen.
+- **Offene Fragen / nächster Schritt:** Qualität prüfen, README ergänzen und einen thematischen Commit vorbereiten.
 
 ## Git und GitHub als durchgehender Lernbereich
 
@@ -147,6 +166,16 @@ Die Begriffe werden dann vertieft, wenn wir sie im Projekt brauchen. Zugangsdate
 - **Eigene Erklärung:** Index `0` steuert die erste Geschenkidee im Array an. Damit wurde die Verständnisfrage richtig beantwortet.
 - **Bestätigter Commit:** `49ea5d9` mit der Nachricht `Render gift card text from JavaScript data`. Das Arbeitsverzeichnis war vor diesem Eintrag sauber.
 - **Nächster kleiner Schritt:** Eine zweite Geschenkidee ergänzen und mit `zeigeGeschenkidee(1)` gezielt anzeigen. Danach folgen Kartenwechsel per Button und dynamischer Fortschritt. Umsetzung und Test stehen noch aus.
+
+### 29.09.2026 – Kartenwechsel, Entscheidungen und Swipe getestet
+
+- **Ziel:** Mehrere Geschenkideen per Button und Swipe durchgehen können.
+- **Umsetzung:** `app.js` verwaltet den aktuellen Kartenindex und die Entscheidungen. `index.html` enthält die Fortschritts- und Abschlussmeldung. `style.css` enthält die Swipe-Animationen.
+- **Ergebnis und Prüfung:** Der Test wurde erfolgreich bestätigt: Ja-/Nein-Buttons, Touch-/Maus-Swipe, Fortschritt und Abschlussmeldung funktionieren.
+- **Verstanden:** Pointer Events können Touch und Maus gemeinsam behandeln. Ein kurzer Swipe wird zurückgesetzt; ein ausreichend weiter Swipe löst eine Entscheidung aus.
+- **Fehler und Lösungsweg:** Zunächst störte der Karten-Pointer-Handler die Buttons. Pointer-Events, die auf einem Button beginnen, werden jetzt vom Swipe-Handler ignoriert.
+- **Git-Schritt:** Noch kein neuer Commit bestätigt. Vor dem nächsten Commit werden `app.js`, `index.html`, `style.css` und dieser Lerntagebuch-Eintrag geprüft.
+- **Offene Fragen / nächster Schritt:** Supabase-Projekt, Datenmodell und Online-Speicherung einrichten.
 
 ## Vorlage für weitere Einträge
 

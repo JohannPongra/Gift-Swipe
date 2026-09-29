@@ -1,6 +1,7 @@
 # Lokale Konfiguration und Geheimnisse
 .env
 .env.*
+config.js
 
 # Betriebssystem- und Editor-Dateien
 .DS_Store
