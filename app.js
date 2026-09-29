@@ -9,7 +9,12 @@ const jaButton = document.querySelector('#ja-button');
 const kartenLabelElement = document.querySelector('.karten-label');
 const titelElement = document.querySelector('#geschenk-titel');
 const beschreibungElement = document.querySelector('.beschreibung');
+const produktLinkElement = document.querySelector('#produkt-link');
+const bildgalerie = document.querySelector('.bildgalerie');
 const bildElement = document.querySelector('.bildplatzhalter');
+const bildZurueckButton = document.querySelector('#bild-zurueck');
+const bildVorButton = document.querySelector('#bild-vor');
+const bildzaehlerElement = document.querySelector('#bildzaehler');
 const fortschrittElement = document.querySelector('.fortschritt');
 const abschlussElement = document.querySelector('#abschlussmeldung');
 const statusElement = document.querySelector('#statusmeldung');
@@ -20,6 +25,45 @@ let pointerStartX = 0;
 let pointerStartY = 0;
 let istGezogen = false;
 let istVerarbeitung = false;
+let aktuelleBildUrls = [];
+let aktuellesBildIndex = 0;
+
+function aktualisiereBild() {
+    bildgalerie.classList.remove(
+        'galerie-mehrfach',
+        'einzelbild-hochformat',
+        'einzelbild-querformat',
+        'einzelbild-quadratisch'
+    );
+    if (aktuelleBildUrls.length > 1) {
+        bildgalerie.classList.add('galerie-mehrfach');
+    }
+
+    bildElement.onload = function () {
+        if (aktuelleBildUrls.length > 1) {
+            return;
+        }
+        const seitenverhaeltnis = bildElement.naturalWidth / bildElement.naturalHeight;
+        bildgalerie.classList.add(
+            seitenverhaeltnis < 0.85
+                ? 'einzelbild-hochformat'
+                : seitenverhaeltnis > 1.2
+                    ? 'einzelbild-querformat'
+                    : 'einzelbild-quadratisch'
+        );
+    };
+
+    if (aktuelleBildUrls[aktuellesBildIndex]) {
+        bildElement.src = aktuelleBildUrls[aktuellesBildIndex];
+    }
+    const hatGalerie = aktuelleBildUrls.length > 1;
+    bildZurueckButton.hidden = !hatGalerie;
+    bildVorButton.hidden = !hatGalerie;
+    bildzaehlerElement.hidden = !hatGalerie;
+    bildzaehlerElement.textContent = hatGalerie
+        ? `${aktuellesBildIndex + 1} / ${aktuelleBildUrls.length}`
+        : '';
+}
 
 function zeigeGeschenkidee(index) {
     const karte = karten[index];
@@ -29,9 +73,13 @@ function zeigeGeschenkidee(index) {
         : 'Geschenkidee';
     titelElement.textContent = karte.titel;
     beschreibungElement.textContent = karte.beschreibung || '';
-    if (karte.bildUrl) {
-        bildElement.src = karte.bildUrl;
-    }
+    produktLinkElement.hidden = !karte.produktUrl;
+    produktLinkElement.href = karte.produktUrl || '#';
+    aktuelleBildUrls = karte.bildUrls?.length
+        ? karte.bildUrls
+        : (karte.bildUrl ? [karte.bildUrl] : []);
+    aktuellesBildIndex = 0;
+    aktualisiereBild();
     bildElement.alt = karte.bildAlt;
     fortschrittElement.textContent = `${index + 1} / ${karten.length}`;
     fortschrittElement.setAttribute(
@@ -140,6 +188,16 @@ jaButton.addEventListener('click', function () {
     verarbeiteEntscheidung('Ja');
 });
 
+bildZurueckButton.addEventListener('click', function () {
+    aktuellesBildIndex = (aktuellesBildIndex - 1 + aktuelleBildUrls.length) % aktuelleBildUrls.length;
+    aktualisiereBild();
+});
+
+bildVorButton.addEventListener('click', function () {
+    aktuellesBildIndex = (aktuellesBildIndex + 1) % aktuelleBildUrls.length;
+    aktualisiereBild();
+});
+
 geschenkkarte.addEventListener('pointerdown', function (ereignis) {
     if (
         istVerarbeitung ||
@@ -194,6 +252,7 @@ geschenkkarte.addEventListener('pointerup', function (ereignis) {
     window.setTimeout(function () {
         geschenkkarte.classList.remove('swipe-rechts', 'swipe-links');
         geschenkkarte.style.transform = '';
+        istVerarbeitung = false;
         verarbeiteEntscheidung(horizontaleDistanz > 0 ? 'Ja' : 'Nein');
     }, 220);
 });

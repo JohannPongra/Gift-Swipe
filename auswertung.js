@@ -43,6 +43,7 @@ function zeigeEntscheidungen(entscheidungen) {
         const idee = eintrag.gift_ideas;
         const titelZelle = document.createElement('td');
         const entscheidungZelle = document.createElement('td');
+        const linkZelle = document.createElement('td');
         const zeitpunktZelle = document.createElement('td');
         const entscheidungMarkierung = document.createElement('span');
 
@@ -52,9 +53,19 @@ function zeigeEntscheidungen(entscheidungen) {
             : 'entscheidung nein';
         entscheidungMarkierung.textContent = eintrag.choice;
         entscheidungZelle.append(entscheidungMarkierung);
+        if (idee?.product_url) {
+            const produktLink = document.createElement('a');
+            produktLink.href = idee.product_url;
+            produktLink.target = '_blank';
+            produktLink.rel = 'noopener noreferrer';
+            produktLink.textContent = 'Öffnen';
+            linkZelle.append(produktLink);
+        } else {
+            linkZelle.textContent = '-';
+        }
         zeitpunktZelle.textContent = formatiereZeitpunkt(eintrag.created_at);
 
-        zeile.append(titelZelle, entscheidungZelle, zeitpunktZelle);
+        zeile.append(titelZelle, entscheidungZelle, linkZelle, zeitpunktZelle);
         entscheidungenListe.append(zeile);
     });
 

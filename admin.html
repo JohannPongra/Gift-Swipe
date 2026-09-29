@@ -54,10 +54,16 @@
                     <input id="ideen-titel-input" name="title" required>
                     <label for="ideen-beschreibung">Beschreibung</label>
                     <textarea id="ideen-beschreibung" name="description" rows="4" required></textarea>
-                    <label for="ideen-bild">Bild</label>
+                    <label for="ideen-bild">Eigenes Bild (optional)</label>
                     <input id="ideen-bild" name="image" type="file" accept="image/png,image/jpeg,image/webp">
-                    <label for="ideen-link">Produkt-Link (optional)</label>
-                    <input id="ideen-link" name="productUrl" type="url" placeholder="https://...">
+                    <label for="ideen-link">Produktseiten-URL</label>
+                    <div class="url-import-zeile">
+                        <input id="ideen-link" name="productUrl" type="url" placeholder="https://shop.de/produkt/...">
+                        <button class="sekundaer-button" id="metadaten-laden-button" type="button">Daten laden</button>
+                    </div>
+                    <div class="bildvorschau" id="ideen-bildvorschau" hidden>
+                        <div class="bildvorschau-galerie" id="ideen-bildvorschau-galerie"></div>
+                    </div>
                     <fieldset>
                         <legend>Kategorien</legend>
                         <div id="kategorien-auswahl" class="checkbox-liste"></div>
@@ -68,7 +74,18 @@
                     </label>
                     <button class="primaer-button" type="submit">Geschenkidee speichern</button>
                 </form>
-                <h3>Vorhandene Geschenkideen</h3>
+                <div class="ideen-listen-kopf">
+                    <h3>Vorhandene Geschenkideen</h3>
+                    <div class="ideen-listen-aktionen">
+                        <label class="checkbox-label">
+                            <input id="ideen-alle-auswaehlen" type="checkbox">
+                            Alle auswählen
+                        </label>
+                        <button class="loeschen-button" id="ideen-mehrere-loeschen" type="button" disabled>
+                            Ausgewählte löschen
+                        </button>
+                    </div>
+                </div>
                 <div id="ideen-liste" class="eintragsliste"></div>
             </section>
 

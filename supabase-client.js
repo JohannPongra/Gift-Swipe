@@ -66,6 +66,7 @@ async function ladeKategorienOnline() {
             titel: kategorie.title,
             beschreibung: kategorie.description,
             bildUrl: kategorie.image_url,
+            bildUrls: kategorie.image_url ? [kategorie.image_url] : [],
             bildAlt: kategorie.title
         };
     });
@@ -87,6 +88,7 @@ async function ladeGeschenkideenOnline() {
             titel: geschenkidee.title,
             beschreibung: geschenkidee.description,
             bildUrl: geschenkidee.image_url,
+            bildUrls: geschenkidee.image_urls || (geschenkidee.image_url ? [geschenkidee.image_url] : []),
             bildAlt: geschenkidee.title,
             produktUrl: geschenkidee.product_url
         };

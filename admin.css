@@ -28,6 +28,11 @@
     margin: 0 auto;
 }
 
+#login-form {
+    display: grid;
+    gap: 0.6rem;
+}
+
 .dashboard-kopf,
 .link-zeile {
     display: flex;
@@ -89,6 +94,18 @@
     resize: vertical;
 }
 
+.url-import-zeile {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+}
+
+.url-import-zeile input {
+    min-width: 0;
+    flex: 1;
+    margin-bottom: 0 !important;
+}
+
 .admin-form fieldset {
     margin: 0.5rem 0;
     padding: 0;
@@ -144,6 +161,24 @@
     margin-top: 0;
 }
 
+.ideen-listen-kopf {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.ideen-listen-kopf h3 {
+    margin-bottom: 1rem;
+}
+
+.ideen-listen-aktionen {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: Arial, sans-serif;
+}
+
 .eintragsliste {
     display: grid;
     gap: 0.75rem;
@@ -159,11 +194,42 @@
     font-family: Arial, sans-serif;
 }
 
+.ideen-auswahl {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
 .eintrag img {
     width: 4rem;
     height: 4rem;
     border-radius: 0.35rem;
     object-fit: cover;
+}
+
+.bildvorschau {
+    width: min(100%, 24rem);
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background-color: #dce8e5;
+}
+
+.bildvorschau-galerie {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+}
+
+.bildvorschau-galerie img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .eintrag-text {
@@ -180,6 +246,23 @@
     margin-top: 0.25rem;
     color: var(--sekundaerfarbe);
     font-size: 0.9rem;
+}
+
+.loeschen-button {
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--neinfarbe);
+    border-radius: 0.4rem;
+    background-color: transparent;
+    color: var(--neinfarbe);
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.loeschen-button:hover,
+.loeschen-button:focus-visible {
+    background-color: var(--neinfarbe);
+    color: #ffffff;
 }
 
 .link-ergebnis {
@@ -224,5 +307,11 @@
 
     .tab-button {
         white-space: nowrap;
+    }
+
+    .ideen-listen-kopf,
+    .ideen-listen-aktionen {
+        align-items: stretch;
+        flex-direction: column;
     }
 }
