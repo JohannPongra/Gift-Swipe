@@ -2,6 +2,12 @@
 .env
 .env.*
 config.js
+*.log
+
+# Lokale Supabase- und Build-Artefakte
+supabase/.temp/
+dist/
+coverage/
 
 # Betriebssystem- und Editor-Dateien
 .DS_Store

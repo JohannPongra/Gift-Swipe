@@ -37,8 +37,8 @@ Geplant sind HTML, CSS, Vanilla JavaScript, Supabase, Git und GitHub. Zunächst 
 | 4 – Swipe-Funktion          | Maus- und Touch-Gesten, Animation und erster sinnvoller Feature-Branch                        | Erledigt |
 | 5 – Supabase               | Datenmodell, Online-Speicherung, Teilnehmer-Link und sichere Zugriffsregeln                   | Erledigt |
 | 6 – Auswertung             | Entscheidungen anzeigen, filtern und mit Produktlinks sowie Zeitpunkten darstellen            | Erledigt |
-| 7 – Qualität               | Mobile-Design, Lade- und Fehlerzustände, Abschluss, Neustart und Accessibility                | Offen  |
-| 8 – GitHub-Qualität        | README, Screenshots, Setup, Architektur und „What I learned“                                  | Offen  |
+| 7 – Qualität               | Mobile-Design, Lade- und Fehlerzustände, Abschluss, Neustart und Accessibility                | In Arbeit |
+| 8 – GitHub-Qualität        | README, Screenshots, Setup, Architektur und „What I learned“                                  | In Arbeit |
 | 9 – GitHub-Fortgeschritten | Issues, Pull Requests, Branches, Merge, Tags und Releases am echten Projekt                   | Offen  |
 
 ### 29.09.2026 – Geschenkideen und Entscheidungen online gespeichert
@@ -59,6 +59,15 @@ Geplant sind HTML, CSS, Vanilla JavaScript, Supabase, Git und GitHub. Zunächst 
 - **Verstanden:** Die Teilnehmerseite und die Auswertung können denselben öffentlichen Supabase-Client verwenden; der Zugriff auf Entscheidungen wird durch die eingeloggte Supabase-Session und RLS geregelt.
 - **Git-Schritt:** Noch kein neuer Commit bestätigt. `config.js` bleibt aus dem Repository ausgeschlossen.
 - **Offene Fragen / nächster Schritt:** Qualität prüfen, README ergänzen und einen thematischen Commit vorbereiten.
+
+### 29.09.2026 – GitHub-Pages-Veröffentlichung und Sicherheitscheck vorbereitet
+
+- **Ziel:** GiftSwipe extern erreichbar machen und das Repository für GitHub vorbereiten.
+- **Umsetzung:** Ein GitHub-Pages-Workflow wurde angelegt. Er erzeugt `config.js` beim Deployment aus GitHub Actions Secrets. README, Ignore-Regeln und Sicherheitsdokumentation wurden ergänzt.
+- **Ergebnis und Prüfung:** `config.js` ist lokal ignoriert. Die versionierten Dateien enthalten keinen Service-Role-Key und keinen echten Teilnehmer-Token. Die Supabase-CLI und die Produkt-Metadaten-Edge-Function wurden bereits erfolgreich verwendet.
+- **Verstanden:** Ein öffentlicher Supabase-Anon-Key ist für den Browser vorgesehen; RLS schützt die Daten. Geheimnisse werden über GitHub Actions Secrets in den Deployment-Prozess gegeben.
+- **Git-Schritt:** Commit und Push des aufgeräumten Stands stehen noch aus. Vorher werden `git ls-files`, `git diff --check` und die Actions-Konfiguration geprüft.
+- **Offene Fragen / nächster Schritt:** GitHub Secrets setzen, Pages-Workflow ausführen und die öffentliche Teilnehmer-, Admin- und Auswertungsseite testen.
 
 ## Git und GitHub als durchgehender Lernbereich
 
