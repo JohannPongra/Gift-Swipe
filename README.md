@@ -1,6 +1,6 @@
 # GiftSwipe
 
-GiftSwipe ist eine kleine mobile Web-App fuer Geschenkentscheidungen. Eine Person bewertet Geschenkideen per Button oder Swipe mit Ja/Nein. Die Entscheidungen werden in Supabase gespeichert und koennen auf einer geschuetzten Auswertungsseite betrachtet werden.
+GiftSwipe ist eine kleine mobile Web-App fuer Geschenkentscheidungen. **Sie wurde fast komplett gevibecoded.** Eine Person bewertet Geschenkideen per Button oder Swipe mit Ja/Nein. Die Entscheidungen werden in Supabase gespeichert und koennen auf einer geschuetzten Auswertungsseite betrachtet werden.
 
 ## Funktionen
 
