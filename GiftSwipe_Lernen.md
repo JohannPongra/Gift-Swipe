@@ -142,6 +142,12 @@ Die Begriffe werden dann vertieft, wenn wir sie im Projekt brauchen. Zugangsdate
 - **Vor dem Commit:** Testtexte in Titel und Beschreibung bereinigen, anschließend `app.js`, `index.html` und dieses Lerntagebuch in VS Code prüfen und stagen.
 - **Vorgeschlagene Commit-Message:** `Render gift card text from JavaScript data`. Der Commit ist noch nicht bestätigt.
 
+### 28.09.2026 – Array-Index verstanden und dynamische Texte committed
+
+- **Eigene Erklärung:** Index `0` steuert die erste Geschenkidee im Array an. Damit wurde die Verständnisfrage richtig beantwortet.
+- **Bestätigter Commit:** `49ea5d9` mit der Nachricht `Render gift card text from JavaScript data`. Das Arbeitsverzeichnis war vor diesem Eintrag sauber.
+- **Nächster kleiner Schritt:** Eine zweite Geschenkidee ergänzen und mit `zeigeGeschenkidee(1)` gezielt anzeigen. Danach folgen Kartenwechsel per Button und dynamischer Fortschritt. Umsetzung und Test stehen noch aus.
+
 ## Vorlage für weitere Einträge
 
 ### Datum – Schritt / Thema

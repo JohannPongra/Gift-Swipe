@@ -1,8 +1,13 @@
 const geschenkideen = [
     {
-        titel: 'Gemütlicheee Leselampe',
+        titel: 'Gemütliche Leselampe',
         preis: '24,99 €',
-        beschreibung: 'Eine rstilvolle Leselampe für gemütliche Abende mit einem guten Buch.'
+        beschreibung: 'Eine stilvolle Leselampe für gemütliche Abende mit einem guten Buch.'
+    },
+    {
+        titel: 'Isolierflasche',
+        preis: '19,99 €',
+        beschreibung: 'Eine wiederverwendbare Flasche, die Getränke unterwegs warm oder kalt hält.'
     }
 ];
 
@@ -20,7 +25,7 @@ function zeigeGeschenkidee(index) {
     beschreibungElement.textContent = geschenkidee.beschreibung;
 }
 
-zeigeGeschenkidee(0);
+zeigeGeschenkidee(1);
 
 console.log('GiftSwipe wurde geladen.');
 console.log(`${geschenkideen.length} Geschenkidee ist vorbereitet.`);
