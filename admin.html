@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GiftSwipe-Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="supabase-client.js"></script>
+    <script src="admin.js" defer></script>
+</head>
+<body>
+    <main class="admin-seite">
+        <header class="admin-kopf">
+            <p class="ueberzeile">GiftSwipe</p>
+            <h1>Admin-Bereich</h1>
+            <p>Geschenkideen, Kategorien und Teilnehmer-Links verwalten.</p>
+        </header>
+
+        <section class="loginbereich" id="loginbereich" aria-labelledby="login-titel">
+            <h2 id="login-titel">Admin-Login</h2>
+            <form id="login-form">
+                <label for="email">E-Mail-Adresse</label>
+                <input id="email" name="email" type="email" autocomplete="username" required>
+                <label for="passwort">Passwort</label>
+                <input id="passwort" name="passwort" type="password" autocomplete="current-password" required>
+                <button class="primaer-button" type="submit">Einloggen</button>
+            </form>
+        </section>
+
+        <section class="admin-dashboard" id="admin-dashboard" hidden>
+            <div class="dashboard-kopf">
+                <div>
+                    <p class="ueberzeile">Geschützter Bereich</p>
+                    <h2>Verwalten</h2>
+                </div>
+                <button class="sekundaer-button" id="abmelden-button" type="button">Abmelden</button>
+            </div>
+
+            <p class="statusmeldung" id="statusmeldung" role="status" aria-live="polite"></p>
+
+            <nav class="admin-tabs" aria-label="Admin-Bereiche">
+                <button class="tab-button aktiv" type="button" data-tab="ideen-panel">Geschenkideen</button>
+                <button class="tab-button" type="button" data-tab="kategorien-panel">Kategorien</button>
+                <button class="tab-button" type="button" data-tab="session-panel">Teilnehmer-Link</button>
+            </nav>
+
+            <section class="admin-panel aktiv" id="ideen-panel" aria-labelledby="ideen-titel">
+                <h3 id="ideen-titel">Neue Geschenkidee</h3>
+                <form id="ideen-form" class="admin-form">
+                    <label for="ideen-titel-input">Titel</label>
+                    <input id="ideen-titel-input" name="title" required>
+                    <label for="ideen-beschreibung">Beschreibung</label>
+                    <textarea id="ideen-beschreibung" name="description" rows="4" required></textarea>
+                    <label for="ideen-bild">Bild</label>
+                    <input id="ideen-bild" name="image" type="file" accept="image/png,image/jpeg,image/webp">
+                    <label for="ideen-link">Produkt-Link (optional)</label>
+                    <input id="ideen-link" name="productUrl" type="url" placeholder="https://...">
+                    <fieldset>
+                        <legend>Kategorien</legend>
+                        <div id="kategorien-auswahl" class="checkbox-liste"></div>
+                    </fieldset>
+                    <label class="checkbox-label">
+                        <input name="isPublished" type="checkbox" checked>
+                        Sofort veröffentlichen
+                    </label>
+                    <button class="primaer-button" type="submit">Geschenkidee speichern</button>
+                </form>
+                <h3>Vorhandene Geschenkideen</h3>
+                <div id="ideen-liste" class="eintragsliste"></div>
+            </section>
+
+            <section class="admin-panel" id="kategorien-panel" aria-labelledby="kategorien-titel" hidden>
+                <h3 id="kategorien-titel">Neue Kategorie</h3>
+                <form id="kategorien-form" class="admin-form">
+                    <label for="kategorien-titel-input">Titel</label>
+                    <input id="kategorien-titel-input" name="title" placeholder="z. B. Kleidung" required>
+                    <label for="kategorien-beschreibung">Beschreibung (optional)</label>
+                    <textarea id="kategorien-beschreibung" name="description" rows="3"></textarea>
+                    <label for="kategorien-bild">Bild (optional)</label>
+                    <input id="kategorien-bild" name="image" type="file" accept="image/png,image/jpeg,image/webp">
+                    <label class="checkbox-label">
+                        <input name="isPublished" type="checkbox" checked>
+                        Sofort veröffentlichen
+                    </label>
+                    <button class="primaer-button" type="submit">Kategorie speichern</button>
+                </form>
+                <h3>Vorhandene Kategorien</h3>
+                <div id="kategorien-liste" class="eintragsliste"></div>
+            </section>
+
+            <section class="admin-panel" id="session-panel" aria-labelledby="session-titel" hidden>
+                <h3 id="session-titel">Neuen Teilnehmer-Link erzeugen</h3>
+                <form id="session-form" class="admin-form">
+                    <label for="session-modus">Ablauf</label>
+                    <select id="session-modus" name="mode">
+                        <option value="normal">Direkt Geschenkideen anzeigen</option>
+                        <option value="categories">Erst Kategorien, dann passende Geschenkideen</option>
+                    </select>
+                    <button class="primaer-button" type="submit">Link erzeugen</button>
+                </form>
+                <div class="link-ergebnis" id="link-ergebnis" hidden>
+                    <label for="teilnehmer-link">Teilnehmer-Link</label>
+                    <div class="link-zeile">
+                        <input id="teilnehmer-link" readonly>
+                        <button class="sekundaer-button" id="link-kopieren" type="button">Kopieren</button>
+                    </div>
+                    <p>Behandle diesen Link wie einen privaten Zugang.</p>
+                </div>
+            </section>
+        </section>
+
+        <p class="statusmeldung seitenstatus" id="seitenstatus" role="alert" aria-live="assertive"></p>
+    </main>
+</body>
+</html>

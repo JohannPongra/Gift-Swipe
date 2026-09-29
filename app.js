@@ -1,10 +1,13 @@
 let geschenkideen = [];
+let karten = [];
+let kategorieModus = false;
+let aktuellePhase = 'produkte';
 
 const geschenkkarte = document.querySelector('.geschenkekarte');
 const neinButton = document.querySelector('#nein-button');
 const jaButton = document.querySelector('#ja-button');
+const kartenLabelElement = document.querySelector('.karten-label');
 const titelElement = document.querySelector('#geschenk-titel');
-const preisElement = document.querySelector('.preis');
 const beschreibungElement = document.querySelector('.beschreibung');
 const bildElement = document.querySelector('.bildplatzhalter');
 const fortschrittElement = document.querySelector('.fortschritt');
@@ -19,19 +22,21 @@ let istGezogen = false;
 let istVerarbeitung = false;
 
 function zeigeGeschenkidee(index) {
-    const geschenkidee = geschenkideen[index];
+    const karte = karten[index];
 
-    titelElement.textContent = geschenkidee.titel;
-    preisElement.textContent = geschenkidee.preis;
-    beschreibungElement.textContent = geschenkidee.beschreibung;
-    if (geschenkidee.bildUrl) {
-        bildElement.src = geschenkidee.bildUrl;
+    kartenLabelElement.textContent = aktuellePhase === 'kategorien'
+        ? 'Kategorie'
+        : 'Geschenkidee';
+    titelElement.textContent = karte.titel;
+    beschreibungElement.textContent = karte.beschreibung || '';
+    if (karte.bildUrl) {
+        bildElement.src = karte.bildUrl;
     }
-    bildElement.alt = geschenkidee.bildAlt;
-    fortschrittElement.textContent = `${index + 1} / ${geschenkideen.length}`;
+    bildElement.alt = karte.bildAlt;
+    fortschrittElement.textContent = `${index + 1} / ${karten.length}`;
     fortschrittElement.setAttribute(
         'aria-label',
-        `Fortschritt: Geschenk ${index + 1} von ${geschenkideen.length}`
+        `Fortschritt: ${aktuellePhase === 'kategorien' ? 'Kategorie' : 'Geschenkidee'} ${index + 1} von ${karten.length}`
     );
 }
 
@@ -45,15 +50,15 @@ function setzeButtonsAktiv(aktiv) {
     jaButton.disabled = !aktiv;
 }
 
-function zeigeAbschluss() {
+function zeigeAbschluss(nachricht) {
     geschenkkarte.hidden = true;
     fortschrittElement.hidden = true;
     abschlussElement.hidden = false;
-    abschlussElement.textContent = `Danke! ${entscheidungen.length} Geschenkideen wurden bewertet.`;
+    abschlussElement.textContent = nachricht || `Danke! ${entscheidungen.length} Geschenkideen wurden bewertet.`;
 }
 
 async function verarbeiteEntscheidung(entscheidung) {
-    if (istVerarbeitung || aktuelleIndex >= geschenkideen.length) {
+    if (istVerarbeitung || aktuelleIndex >= karten.length) {
         return;
     }
 
@@ -61,10 +66,14 @@ async function verarbeiteEntscheidung(entscheidung) {
     setzeButtonsAktiv(false);
     setzeStatus('Entscheidung wird gespeichert ...');
 
-    const geschenkidee = geschenkideen[aktuelleIndex];
+    const karte = karten[aktuelleIndex];
 
     try {
-        await window.giftSwipeApi.speichereEntscheidung(geschenkidee.id, entscheidung);
+        if (aktuellePhase === 'kategorien') {
+            await window.giftSwipeApi.speichereKategorieEntscheidung(karte.id, entscheidung);
+        } else {
+            await window.giftSwipeApi.speichereEntscheidung(karte.id, entscheidung);
+        }
     } catch (fehler) {
         istVerarbeitung = false;
         setzeButtonsAktiv(true);
@@ -80,15 +89,42 @@ async function verarbeiteEntscheidung(entscheidung) {
     }
 
     entscheidungen.push({
-        geschenkidee: geschenkidee.titel,
+        titel: karte.titel,
         entscheidung
     });
     aktuelleIndex += 1;
+
+    if (aktuellePhase === 'kategorien' && aktuelleIndex === karten.length) {
+        setzeStatus('Passende Geschenkideen werden geladen ...');
+
+        try {
+            geschenkideen = await window.giftSwipeApi.ladeGeschenkideen();
+        } catch (fehler) {
+            zeigeAbschluss('Die passenden Geschenkideen konnten nicht geladen werden.');
+            console.error(fehler);
+            return;
+        }
+
+        if (!geschenkideen.length) {
+            zeigeAbschluss('Für deine Auswahl wurden keine passenden Geschenkideen gefunden.');
+            return;
+        }
+
+        aktuellePhase = 'produkte';
+        karten = geschenkideen;
+        aktuelleIndex = 0;
+        istVerarbeitung = false;
+        setzeButtonsAktiv(true);
+        setzeStatus('');
+        zeigeGeschenkidee(aktuelleIndex);
+        return;
+    }
+
     istVerarbeitung = false;
     setzeButtonsAktiv(true);
     setzeStatus('');
 
-    if (aktuelleIndex === geschenkideen.length) {
+    if (aktuelleIndex === karten.length) {
         zeigeAbschluss();
         return;
     }
@@ -107,8 +143,8 @@ jaButton.addEventListener('click', function () {
 geschenkkarte.addEventListener('pointerdown', function (ereignis) {
     if (
         istVerarbeitung ||
-        !geschenkideen.length ||
-        aktuelleIndex >= geschenkideen.length ||
+        !karten.length ||
+        aktuelleIndex >= karten.length ||
         ereignis.target.closest('button')
     ) {
         return;
@@ -173,10 +209,15 @@ async function initialisiereApp() {
     setzeStatus('Geschenkideen werden geladen ...');
 
     try {
-        geschenkideen = await window.giftSwipeApi.ladeGeschenkideen();
+        const session = await window.giftSwipeApi.ladeSessionKonfiguration();
+        kategorieModus = session.modus === 'categories';
+        aktuellePhase = kategorieModus ? 'kategorien' : 'produkte';
+        karten = kategorieModus
+            ? await window.giftSwipeApi.ladeKategorien()
+            : await window.giftSwipeApi.ladeGeschenkideen();
 
-        if (!geschenkideen.length) {
-            throw new Error('KEINE_GESCHENKIDEEN');
+        if (!karten.length) {
+            throw new Error('KEINE_KARTEN');
         }
 
         setzeButtonsAktiv(true);

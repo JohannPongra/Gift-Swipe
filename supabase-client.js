@@ -18,7 +18,7 @@ const sessionToken = new URLSearchParams(window.location.search).get('token');
 
 window.giftSwipeSupabaseClient = supabaseClient;
 
-async function ladeGeschenkideenOnline() {
+function pruefeClientUndSession() {
     if (!supabaseClient) {
         throw new Error('SUPABASE_KONFIGURATION_FEHLT');
     }
@@ -26,11 +26,56 @@ async function ladeGeschenkideenOnline() {
     if (!sessionToken) {
         throw new Error('SESSION_TOKEN_FEHLT');
     }
+}
+
+async function ladeSessionKonfiguration() {
+    pruefeClientUndSession();
+
+    const { data, error } = await supabaseClient.rpc('get_session_config', {
+        p_access_token: sessionToken
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    if (!data || !data.length) {
+        throw new Error('SESSION_NICHT_GEFUNDEN');
+    }
+
+    return {
+        id: data[0].session_id,
+        modus: data[0].session_mode
+    };
+}
+
+async function ladeKategorienOnline() {
+    pruefeClientUndSession();
+
+    const { data, error } = await supabaseClient.rpc('get_categories_for_session', {
+        p_access_token: sessionToken
+    });
+
+    if (error) {
+        throw error;
+    }
+
+    return data.map(function (kategorie) {
+        return {
+            id: kategorie.id,
+            titel: kategorie.title,
+            beschreibung: kategorie.description,
+            bildUrl: kategorie.image_url,
+            bildAlt: kategorie.title
+        };
+    });
+}
+
+async function ladeGeschenkideenOnline() {
+    pruefeClientUndSession();
 
     const { data, error } = await supabaseClient
-        .from('gift_ideas')
-        .select('id, title, price, description, image_url, product_url')
-        .order('created_at', { ascending: true });
+        .rpc('get_gifts_for_session', { p_access_token: sessionToken });
 
     if (error) {
         throw error;
@@ -40,7 +85,6 @@ async function ladeGeschenkideenOnline() {
         return {
             id: geschenkidee.id,
             titel: geschenkidee.title,
-            preis: geschenkidee.price,
             beschreibung: geschenkidee.description,
             bildUrl: geschenkidee.image_url,
             bildAlt: geschenkidee.title,
@@ -50,9 +94,7 @@ async function ladeGeschenkideenOnline() {
 }
 
 async function speichereEntscheidungOnline(geschenkideeId, entscheidung) {
-    if (!supabaseClient || !sessionToken) {
-        throw new Error('SESSION_NICHT_BEREIT');
-    }
+    pruefeClientUndSession();
 
     const { error } = await supabaseClient.rpc('submit_decision', {
         p_access_token: sessionToken,
@@ -65,7 +107,24 @@ async function speichereEntscheidungOnline(geschenkideeId, entscheidung) {
     }
 }
 
+async function speichereKategorieEntscheidungOnline(kategorieId, entscheidung) {
+    pruefeClientUndSession();
+
+    const { error } = await supabaseClient.rpc('submit_category_decision', {
+        p_access_token: sessionToken,
+        p_category_id: kategorieId,
+        p_choice: entscheidung
+    });
+
+    if (error) {
+        throw error;
+    }
+}
+
 window.giftSwipeApi = {
+    ladeSessionKonfiguration,
+    ladeKategorien: ladeKategorienOnline,
     ladeGeschenkideen: ladeGeschenkideenOnline,
-    speichereEntscheidung: speichereEntscheidungOnline
+    speichereEntscheidung: speichereEntscheidungOnline,
+    speichereKategorieEntscheidung: speichereKategorieEntscheidungOnline
 };

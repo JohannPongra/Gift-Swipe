@@ -42,13 +42,11 @@ function zeigeEntscheidungen(entscheidungen) {
         const zeile = document.createElement('tr');
         const idee = eintrag.gift_ideas;
         const titelZelle = document.createElement('td');
-        const preisZelle = document.createElement('td');
         const entscheidungZelle = document.createElement('td');
         const zeitpunktZelle = document.createElement('td');
         const entscheidungMarkierung = document.createElement('span');
 
         titelZelle.textContent = idee?.title || 'Unbekannte Geschenkidee';
-        preisZelle.textContent = idee?.price || '-';
         entscheidungMarkierung.className = eintrag.choice === 'Ja'
             ? 'entscheidung ja'
             : 'entscheidung nein';
@@ -56,7 +54,7 @@ function zeigeEntscheidungen(entscheidungen) {
         entscheidungZelle.append(entscheidungMarkierung);
         zeitpunktZelle.textContent = formatiereZeitpunkt(eintrag.created_at);
 
-        zeile.append(titelZelle, preisZelle, entscheidungZelle, zeitpunktZelle);
+        zeile.append(titelZelle, entscheidungZelle, zeitpunktZelle);
         entscheidungenListe.append(zeile);
     });
 
@@ -76,7 +74,7 @@ async function ladeAuswertung() {
     zeigeStatus(statusElement, 'Auswertung wird geladen ...');
     const { data, error } = await client
         .from('decisions')
-        .select('id, choice, created_at, gift_ideas(title, price, product_url)')
+        .select('id, choice, created_at, gift_ideas(title, product_url)')
         .order('created_at', { ascending: false });
 
     if (error) {

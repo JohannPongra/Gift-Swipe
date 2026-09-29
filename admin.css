@@ -1,0 +1,228 @@
+.admin-seite {
+    width: min(100% - 2rem, 58rem);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 2.5rem 0;
+}
+
+.admin-kopf {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.admin-kopf p:not(.ueberzeile) {
+    color: var(--sekundaerfarbe);
+    font-family: Arial, sans-serif;
+}
+
+.loginbereich,
+.admin-dashboard {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: var(--kartenfarbe);
+    box-shadow: var(--schatten);
+}
+
+.loginbereich {
+    max-width: 28rem;
+    margin: 0 auto;
+}
+
+.dashboard-kopf,
+.link-zeile {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    border-bottom: 1px solid #dfe7e4;
+}
+
+.tab-button {
+    padding: 0.7rem 0.8rem;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--sekundaerfarbe);
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.tab-button.aktiv {
+    border-color: var(--akzentfarbe);
+    color: var(--textfarbe);
+}
+
+.admin-form {
+    display: grid;
+    gap: 0.6rem;
+    max-width: 38rem;
+}
+
+.admin-form label,
+.admin-form legend {
+    color: var(--sekundaerfarbe);
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+}
+
+.admin-form input:not([type="checkbox"]),
+.admin-form textarea,
+.admin-form select,
+#login-form input {
+    min-height: 2.8rem;
+    margin-bottom: 0.7rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #cbd6d3;
+    border-radius: 0.45rem;
+    color: var(--textfarbe);
+    font: inherit;
+}
+
+.admin-form textarea {
+    resize: vertical;
+}
+
+.admin-form fieldset {
+    margin: 0.5rem 0;
+    padding: 0;
+    border: 0;
+}
+
+.checkbox-liste {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.checkbox-label,
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--textfarbe) !important;
+}
+
+.primaer-button,
+.sekundaer-button {
+    min-height: 2.8rem;
+    border: 0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.primaer-button {
+    background-color: var(--jafarbe);
+    color: #ffffff;
+}
+
+.sekundaer-button {
+    padding: 0.5rem 1rem;
+    background-color: #e7efec;
+    color: var(--textfarbe);
+}
+
+.primaer-button:disabled {
+    cursor: wait;
+    opacity: 0.55;
+}
+
+.admin-panel h3 {
+    margin: 1.5rem 0 1rem;
+}
+
+.admin-panel h3:first-child {
+    margin-top: 0;
+}
+
+.eintragsliste {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.eintrag {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem;
+    border: 1px solid #dfe7e4;
+    border-radius: 0.5rem;
+    font-family: Arial, sans-serif;
+}
+
+.eintrag img {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.35rem;
+    object-fit: cover;
+}
+
+.eintrag-text {
+    min-width: 0;
+    flex: 1;
+}
+
+.eintrag-text strong,
+.eintrag-text span {
+    display: block;
+}
+
+.eintrag-text span {
+    margin-top: 0.25rem;
+    color: var(--sekundaerfarbe);
+    font-size: 0.9rem;
+}
+
+.link-ergebnis {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f4f1eb;
+    font-family: Arial, sans-serif;
+}
+
+.link-ergebnis label,
+.link-ergebnis p {
+    display: block;
+    color: var(--sekundaerfarbe);
+    font-size: 0.9rem;
+}
+
+.link-zeile input {
+    min-width: 0;
+    flex: 1;
+    min-height: 2.8rem;
+    padding: 0.65rem;
+    border: 1px solid #cbd6d3;
+    border-radius: 0.45rem;
+    font: inherit;
+}
+
+.seitenstatus {
+    margin-top: 1rem;
+    color: var(--neinfarbe);
+}
+
+@media (max-width: 600px) {
+    .dashboard-kopf,
+    .link-zeile {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-tabs {
+        overflow-x: auto;
+    }
+
+    .tab-button {
+        white-space: nowrap;
+    }
+}
