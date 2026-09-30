@@ -82,7 +82,7 @@ async function ladeGeschenkideenOnline() {
         throw error;
     }
 
-    const geschenkideen = data.map(function (geschenkidee) {
+    return data.map(function (geschenkidee) {
         return {
             id: geschenkidee.id,
             titel: geschenkidee.title,
@@ -93,16 +93,6 @@ async function ladeGeschenkideenOnline() {
             produktUrl: geschenkidee.product_url
         };
     });
-
-    for (let index = geschenkideen.length - 1; index > 0; index -= 1) {
-        const zufallsIndex = Math.floor(Math.random() * (index + 1));
-        [geschenkideen[index], geschenkideen[zufallsIndex]] = [
-            geschenkideen[zufallsIndex],
-            geschenkideen[index]
-        ];
-    }
-
-    return geschenkideen;
 }
 
 async function speichereEntscheidungOnline(geschenkideeId, entscheidung) {

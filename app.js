@@ -32,6 +32,20 @@ let istVerarbeitung = false;
 let aktuelleBildUrls = [];
 let aktuellesBildIndex = 0;
 
+function mischeKarten(kartenListe) {
+    const gemischteKarten = [...kartenListe];
+
+    for (let index = gemischteKarten.length - 1; index > 0; index -= 1) {
+        const zufallsIndex = Math.floor(Math.random() * (index + 1));
+        [gemischteKarten[index], gemischteKarten[zufallsIndex]] = [
+            gemischteKarten[zufallsIndex],
+            gemischteKarten[index]
+        ];
+    }
+
+    return gemischteKarten;
+}
+
 function aktualisiereBild() {
     bildgalerie.classList.remove(
         'galerie-mehrfach',
@@ -207,7 +221,7 @@ async function verarbeiteEntscheidung(entscheidung) {
         setzeStatus('Passende Geschenkideen werden geladen ...');
 
         try {
-            geschenkideen = await window.giftSwipeApi.ladeGeschenkideen();
+            geschenkideen = mischeKarten(await window.giftSwipeApi.ladeGeschenkideen());
         } catch (fehler) {
             zeigeAbschluss('Die passenden Geschenkideen konnten nicht geladen werden.');
             console.error(fehler);
@@ -355,7 +369,7 @@ async function initialisiereApp() {
         aktuellePhase = kategorieModus ? 'kategorien' : 'produkte';
         karten = kategorieModus
             ? await window.giftSwipeApi.ladeKategorien()
-            : await window.giftSwipeApi.ladeGeschenkideen();
+            : mischeKarten(await window.giftSwipeApi.ladeGeschenkideen());
 
         if (!karten.length) {
             throw new Error('KEINE_KARTEN');
