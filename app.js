@@ -17,9 +17,11 @@ const bildVorButton = document.querySelector('#bild-vor');
 const bildzaehlerElement = document.querySelector('#bildzaehler');
 const fortschrittElement = document.querySelector('.fortschritt');
 const abschlussElement = document.querySelector('#abschlussmeldung');
+const weiterButton = document.querySelector('#weiter-button');
 const statusElement = document.querySelector('#statusmeldung');
 
 let aktuelleIndex = 0;
+let zweiteProduktRunde = false;
 const entscheidungen = [];
 let pointerStartX = 0;
 let pointerStartY = 0;
@@ -101,8 +103,35 @@ function setzeButtonsAktiv(aktiv) {
 function zeigeAbschluss(nachricht) {
     geschenkkarte.hidden = true;
     fortschrittElement.hidden = true;
+    weiterButton.hidden = true;
     abschlussElement.hidden = false;
     abschlussElement.textContent = nachricht || `Danke! ${entscheidungen.length} Geschenkideen wurden bewertet.`;
+}
+
+function zeigeWeiterentscheidung() {
+    geschenkkarte.hidden = true;
+    fortschrittElement.hidden = true;
+    abschlussElement.hidden = false;
+    abschlussElement.textContent = 'Du hast alle Geschenkideen bewertet. Möchtest du deine Ja-Auswahl noch einmal ansehen?';
+    weiterButton.hidden = false;
+}
+
+function starteZweiteProduktRunde() {
+    karten = karten.filter(function (karte) {
+        return entscheidungen.some(function (entscheidung) {
+            return entscheidung.phase === 'produkte'
+                && entscheidung.id === karte.id
+                && entscheidung.entscheidung === 'Ja';
+        });
+    });
+    zweiteProduktRunde = true;
+    aktuelleIndex = 0;
+    abschlussElement.hidden = true;
+    weiterButton.hidden = true;
+    geschenkkarte.hidden = false;
+    fortschrittElement.hidden = false;
+    setzeButtonsAktiv(true);
+    zeigeGeschenkidee(aktuelleIndex);
 }
 
 async function verarbeiteEntscheidung(entscheidung) {
@@ -137,8 +166,10 @@ async function verarbeiteEntscheidung(entscheidung) {
     }
 
     entscheidungen.push({
+        id: karte.id,
         titel: karte.titel,
-        entscheidung
+        entscheidung,
+        phase: aktuellePhase
     });
     aktuelleIndex += 1;
 
@@ -173,6 +204,17 @@ async function verarbeiteEntscheidung(entscheidung) {
     setzeStatus('');
 
     if (aktuelleIndex === karten.length) {
+        if (aktuellePhase === 'produkte' && !zweiteProduktRunde) {
+            const gibtJaAuswahl = entscheidungen.some(function (eintrag) {
+                return eintrag.phase === 'produkte' && eintrag.entscheidung === 'Ja';
+            });
+
+            if (gibtJaAuswahl) {
+                zeigeWeiterentscheidung();
+                return;
+            }
+        }
+
         zeigeAbschluss();
         return;
     }
@@ -187,6 +229,8 @@ neinButton.addEventListener('click', function () {
 jaButton.addEventListener('click', function () {
     verarbeiteEntscheidung('Ja');
 });
+
+weiterButton.addEventListener('click', starteZweiteProduktRunde);
 
 bildZurueckButton.addEventListener('click', function () {
     aktuellesBildIndex = (aktuellesBildIndex - 1 + aktuelleBildUrls.length) % aktuelleBildUrls.length;

@@ -215,7 +215,7 @@ as $$
                 and decisions.choice = 'Ja'
           )
       )
-    order by gifts.created_at;
+    order by random();
 $$;
 
 grant execute on function public.get_gifts_for_session(text) to anon, authenticated;

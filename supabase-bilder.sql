@@ -76,7 +76,7 @@ as $$
           )
       )
     group by gifts.id, gifts.title, gifts.description, gifts.image_url, gifts.product_url, gifts.created_at
-    order by gifts.created_at;
+    order by random();
 $$;
 
 grant execute on function public.get_gifts_for_session(text) to anon, authenticated;

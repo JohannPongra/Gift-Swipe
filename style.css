@@ -264,6 +264,31 @@ h2 {
     text-align: center;
 }
 
+.weiter-button {
+    display: block;
+    min-height: 3.25rem;
+    margin: 1rem auto 0;
+    padding: 0.75rem 1.25rem;
+    border: 0;
+    border-radius: 0.6rem;
+    background-color: var(--akzentfarbe);
+    color: #ffffff;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.weiter-button:hover,
+.weiter-button:focus-visible {
+    filter: brightness(0.94);
+}
+
+.weiter-button:focus-visible {
+    outline: 3px solid var(--textfarbe);
+    outline-offset: 3px;
+}
+
 @media (min-width: 600px) {
     .seiteninhalt {
         padding: 4rem 0;
