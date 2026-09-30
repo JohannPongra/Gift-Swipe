@@ -1,6 +1,6 @@
 # GiftSwipe
 
-GiftSwipe ist eine kleine mobile Web-App fuer Geschenkentscheidungen. Eine Person bewertet Geschenkideen per Button oder Swipe mit Ja/Nein. Die Entscheidungen werden in Supabase gespeichert und koennen auf einer geschuetzten Auswertungsseite betrachtet werden.
+GiftSwipe ist eine kleine mobile Web-App fuer Geschenkentscheidungen. **Sie wurde fast komplett gevibecoded.** Eine Person bewertet Geschenkideen per Button oder Swipe mit Ja/Nein. Die Entscheidungen werden in Supabase gespeichert und koennen auf einer geschuetzten Auswertungsseite betrachtet werden.
 
 ## Funktionen
 
@@ -93,7 +93,7 @@ Der Workflow erzeugt daraus beim Deployment die lokale `config.js`. In GitHub Pa
 Die erwartete Adresse lautet:
 
 ```text
-https://johannpongra.github.io/Gift-Swipe/
+https://YOURGITHUBNAME.github.io/Gift-Swipe/
 ```
 
 Die Pfade fuer Admin und Auswertung sind `/admin.html` und `/auswertung.html`.
