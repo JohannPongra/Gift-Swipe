@@ -21,8 +21,10 @@ const weiterButton = document.querySelector('#weiter-button');
 const statusElement = document.querySelector('#statusmeldung');
 
 let aktuelleIndex = 0;
-let zweiteProduktRunde = false;
+let produktRunde = 1;
 const entscheidungen = [];
+const ausstehendeSpeicherungen = new Set();
+let speicherfehlerAufgetreten = false;
 let pointerStartX = 0;
 let pointerStartY = 0;
 let istGezogen = false;
@@ -104,6 +106,7 @@ function zeigeAbschluss(nachricht) {
     geschenkkarte.hidden = true;
     fortschrittElement.hidden = true;
     weiterButton.hidden = true;
+    weiterButton.disabled = false;
     abschlussElement.hidden = false;
     abschlussElement.textContent = nachricht || `Danke! ${entscheidungen.length} Geschenkideen wurden bewertet.`;
 }
@@ -112,19 +115,59 @@ function zeigeWeiterentscheidung() {
     geschenkkarte.hidden = true;
     fortschrittElement.hidden = true;
     abschlussElement.hidden = false;
-    abschlussElement.textContent = 'Du hast alle Geschenkideen bewertet. Möchtest du deine Ja-Auswahl noch einmal ansehen?';
+    abschlussElement.textContent = `Runde ${produktRunde} ist abgeschlossen. Möchtest du deine Ja-Auswahl noch einmal ansehen?`;
     weiterButton.hidden = false;
+    weiterButton.disabled = false;
 }
 
-function starteZweiteProduktRunde() {
+function speichereEntscheidungImHintergrund(karte, entscheidung) {
+    const speicherung = (async function () {
+        try {
+            if (aktuellePhase === 'kategorien') {
+                await window.giftSwipeApi.speichereKategorieEntscheidung(karte.id, entscheidung);
+            } else {
+                await window.giftSwipeApi.speichereEntscheidung(karte.id, entscheidung);
+            }
+        } catch (fehler) {
+            speicherfehlerAufgetreten = true;
+            setzeStatus('Eine Entscheidung konnte nicht gespeichert werden.');
+            console.error(fehler);
+        }
+    })();
+
+    ausstehendeSpeicherungen.add(speicherung);
+    speicherung.finally(function () {
+        ausstehendeSpeicherungen.delete(speicherung);
+    });
+}
+
+async function warteAufSpeicherungen() {
+    if (ausstehendeSpeicherungen.size) {
+        setzeStatus('Entscheidungen werden abgeschlossen ...');
+        await Promise.all(ausstehendeSpeicherungen);
+    }
+
+    return !speicherfehlerAufgetreten;
+}
+
+async function starteNaechsteProduktRunde() {
+    weiterButton.disabled = true;
+    const speicherungenErfolgreich = await warteAufSpeicherungen();
+    if (!speicherungenErfolgreich) {
+        zeigeAbschluss('Mindestens eine Entscheidung konnte nicht gespeichert werden.');
+        return;
+    }
+
+    const vorherigeRunde = produktRunde;
     karten = karten.filter(function (karte) {
         return entscheidungen.some(function (entscheidung) {
             return entscheidung.phase === 'produkte'
+                && entscheidung.runde === vorherigeRunde
                 && entscheidung.id === karte.id
                 && entscheidung.entscheidung === 'Ja';
         });
     });
-    zweiteProduktRunde = true;
+    produktRunde += 1;
     aktuelleIndex = 0;
     abschlussElement.hidden = true;
     weiterButton.hidden = true;
@@ -141,39 +184,26 @@ async function verarbeiteEntscheidung(entscheidung) {
 
     istVerarbeitung = true;
     setzeButtonsAktiv(false);
-    setzeStatus('Entscheidung wird gespeichert ...');
 
     const karte = karten[aktuelleIndex];
-
-    try {
-        if (aktuellePhase === 'kategorien') {
-            await window.giftSwipeApi.speichereKategorieEntscheidung(karte.id, entscheidung);
-        } else {
-            await window.giftSwipeApi.speichereEntscheidung(karte.id, entscheidung);
-        }
-    } catch (fehler) {
-        istVerarbeitung = false;
-        setzeButtonsAktiv(true);
-        const fehlertext = [
-            fehler.message,
-            fehler.details,
-            fehler.hint,
-            fehler.code
-        ].filter(Boolean).join(' | ') || 'Unbekannter Supabase-Fehler';
-        setzeStatus(`Speichern fehlgeschlagen: ${fehlertext}`);
-        console.error(fehler);
-        return;
-    }
+    speichereEntscheidungImHintergrund(karte, entscheidung);
 
     entscheidungen.push({
         id: karte.id,
         titel: karte.titel,
         entscheidung,
-        phase: aktuellePhase
+        phase: aktuellePhase,
+        runde: aktuellePhase === 'produkte' ? produktRunde : 0
     });
     aktuelleIndex += 1;
 
     if (aktuellePhase === 'kategorien' && aktuelleIndex === karten.length) {
+        const speicherungenErfolgreich = await warteAufSpeicherungen();
+        if (!speicherungenErfolgreich) {
+            zeigeAbschluss('Mindestens eine Entscheidung konnte nicht gespeichert werden.');
+            return;
+        }
+
         setzeStatus('Passende Geschenkideen werden geladen ...');
 
         try {
@@ -204,9 +234,17 @@ async function verarbeiteEntscheidung(entscheidung) {
     setzeStatus('');
 
     if (aktuelleIndex === karten.length) {
-        if (aktuellePhase === 'produkte' && !zweiteProduktRunde) {
+        const speicherungenErfolgreich = await warteAufSpeicherungen();
+        if (!speicherungenErfolgreich) {
+            zeigeAbschluss('Mindestens eine Entscheidung konnte nicht gespeichert werden.');
+            return;
+        }
+
+        if (aktuellePhase === 'produkte' && produktRunde < 3) {
             const gibtJaAuswahl = entscheidungen.some(function (eintrag) {
-                return eintrag.phase === 'produkte' && eintrag.entscheidung === 'Ja';
+                return eintrag.phase === 'produkte'
+                    && eintrag.runde === produktRunde
+                    && eintrag.entscheidung === 'Ja';
             });
 
             if (gibtJaAuswahl) {
@@ -230,7 +268,7 @@ jaButton.addEventListener('click', function () {
     verarbeiteEntscheidung('Ja');
 });
 
-weiterButton.addEventListener('click', starteZweiteProduktRunde);
+weiterButton.addEventListener('click', starteNaechsteProduktRunde);
 
 bildZurueckButton.addEventListener('click', function () {
     aktuellesBildIndex = (aktuellesBildIndex - 1 + aktuelleBildUrls.length) % aktuelleBildUrls.length;
