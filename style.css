@@ -78,7 +78,7 @@ h1 {
     background-color: var(--kartenfarbe);
     box-shadow: var(--schatten);
     touch-action: pan-y;
-    transition: transform 220ms ease;
+    transition: transform 220ms cubic-bezier(0.22, 0.8, 0.3, 1), opacity 220ms ease;
     will-change: transform;
 }
 
@@ -88,11 +88,13 @@ h1 {
 }
 
 .geschenkekarte.swipe-links {
-    transform: translateX(-120%) rotate(-18deg);
+    opacity: 0;
+    transform: translateX(-125%) rotate(-18deg);
 }
 
 .geschenkekarte.swipe-rechts {
-    transform: translateX(120%) rotate(18deg);
+    opacity: 0;
+    transform: translateX(125%) rotate(18deg);
 }
 
 .bildgalerie {

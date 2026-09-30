@@ -323,7 +323,9 @@ geschenkkarte.addEventListener('pointermove', function (ereignis) {
         return;
     }
 
-    geschenkkarte.style.transform = `translateX(${horizontaleDistanz}px) rotate(${horizontaleDistanz / 18}deg)`;
+    const begrenzteDistanz = Math.max(-geschenkkarte.offsetWidth, Math.min(geschenkkarte.offsetWidth, horizontaleDistanz));
+    geschenkkarte.style.transform = `translateX(${begrenzteDistanz}px) rotate(${begrenzteDistanz / 22}deg)`;
+    geschenkkarte.style.opacity = `${1 - Math.min(0.22, Math.abs(begrenzteDistanz) / geschenkkarte.offsetWidth * 0.22)}`;
 });
 
 geschenkkarte.addEventListener('pointerup', function (ereignis) {
@@ -337,11 +339,16 @@ geschenkkarte.addEventListener('pointerup', function (ereignis) {
     geschenkkarte.classList.remove('wird-gezogen');
 
     if (Math.abs(horizontaleDistanz) < swipeGrenze) {
-        geschenkkarte.style.transform = '';
+        window.requestAnimationFrame(function () {
+            geschenkkarte.style.transform = '';
+            geschenkkarte.style.opacity = '';
+        });
         return;
     }
 
     istVerarbeitung = true;
+    geschenkkarte.style.transform = '';
+    geschenkkarte.style.opacity = '';
     geschenkkarte.classList.add(
         horizontaleDistanz > 0 ? 'swipe-rechts' : 'swipe-links'
     );
@@ -357,6 +364,7 @@ geschenkkarte.addEventListener('pointercancel', function () {
     istGezogen = false;
     geschenkkarte.classList.remove('wird-gezogen');
     geschenkkarte.style.transform = '';
+    geschenkkarte.style.opacity = '';
 });
 
 async function initialisiereApp() {
