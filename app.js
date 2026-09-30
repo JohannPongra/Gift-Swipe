@@ -19,6 +19,7 @@ const fortschrittElement = document.querySelector('.fortschritt');
 const abschlussElement = document.querySelector('#abschlussmeldung');
 const weiterButton = document.querySelector('#weiter-button');
 const statusElement = document.querySelector('#statusmeldung');
+const seitenElement = document.body;
 
 let aktuelleIndex = 0;
 let produktRunde = 1;
@@ -114,6 +115,11 @@ function setzeStatus(nachricht) {
 function setzeButtonsAktiv(aktiv) {
     neinButton.disabled = !aktiv;
     jaButton.disabled = !aktiv;
+}
+
+function setzeSwipeVorschau(richtung) {
+    seitenElement.classList.toggle('swipe-vorschau-ja', richtung === 'ja');
+    seitenElement.classList.toggle('swipe-vorschau-nein', richtung === 'nein');
 }
 
 function zeigeAbschluss(nachricht) {
@@ -323,6 +329,7 @@ geschenkkarte.addEventListener('pointermove', function (ereignis) {
         return;
     }
 
+    setzeSwipeVorschau(horizontaleDistanz > 0 ? 'ja' : 'nein');
     const begrenzteDistanz = Math.max(-geschenkkarte.offsetWidth, Math.min(geschenkkarte.offsetWidth, horizontaleDistanz));
     geschenkkarte.style.transform = `translateX(${begrenzteDistanz}px) rotate(${begrenzteDistanz / 22}deg)`;
     geschenkkarte.style.opacity = `${1 - Math.min(0.22, Math.abs(begrenzteDistanz) / geschenkkarte.offsetWidth * 0.22)}`;
@@ -339,6 +346,7 @@ geschenkkarte.addEventListener('pointerup', function (ereignis) {
     geschenkkarte.classList.remove('wird-gezogen');
 
     if (Math.abs(horizontaleDistanz) < swipeGrenze) {
+        setzeSwipeVorschau('');
         window.requestAnimationFrame(function () {
             geschenkkarte.style.transform = '';
             geschenkkarte.style.opacity = '';
@@ -347,13 +355,16 @@ geschenkkarte.addEventListener('pointerup', function (ereignis) {
     }
 
     istVerarbeitung = true;
+    const swipeRichtung = horizontaleDistanz > 0 ? 'ja' : 'nein';
     geschenkkarte.style.transform = '';
     geschenkkarte.style.opacity = '';
+    setzeSwipeVorschau(swipeRichtung);
     geschenkkarte.classList.add(
-        horizontaleDistanz > 0 ? 'swipe-rechts' : 'swipe-links'
+        swipeRichtung === 'ja' ? 'swipe-rechts' : 'swipe-links'
     );
     window.setTimeout(function () {
         geschenkkarte.classList.remove('swipe-rechts', 'swipe-links');
+        setzeSwipeVorschau('');
         geschenkkarte.style.transform = '';
         istVerarbeitung = false;
         verarbeiteEntscheidung(horizontaleDistanz > 0 ? 'Ja' : 'Nein');
@@ -363,6 +374,7 @@ geschenkkarte.addEventListener('pointerup', function (ereignis) {
 geschenkkarte.addEventListener('pointercancel', function () {
     istGezogen = false;
     geschenkkarte.classList.remove('wird-gezogen');
+    setzeSwipeVorschau('');
     geschenkkarte.style.transform = '';
     geschenkkarte.style.opacity = '';
 });

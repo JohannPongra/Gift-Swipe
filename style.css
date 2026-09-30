@@ -19,6 +19,15 @@ body {
     background: linear-gradient(145deg, #f4f1eb 0%, #e7efec 100%);
     color: var(--textfarbe);
     font-family: Georgia, 'Times New Roman', serif;
+    transition: background 180ms ease;
+}
+
+body.swipe-vorschau-ja {
+    background: linear-gradient(145deg, #edf6ee 0%, #cfe9dc 100%);
+}
+
+body.swipe-vorschau-nein {
+    background: linear-gradient(145deg, #faf0ed 0%, #f0d7d2 100%);
 }
 
 .seiteninhalt {
